@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>디지털 새싹 참가 신청</title>
+<meta name="description" content="구월중학교 1학년 디지털 새싹 「AI 플레이그라운드: n8n 에이전트 메이커」 선착순 20명 참가 신청">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%2300AE53'/><path d='M32 50V30' stroke='white' stroke-width='5' stroke-linecap='round'/><path d='M32 32c-2-9-9-13-17-12 0 9 7 14 17 12z' fill='white'/><path d='M32 28c2-10 10-14 18-13 0 10-8 15-18 13z' fill='%23ABD261'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* 디지털 새싹 누리집과 같은 결: 흰 바탕 + 초록 포인트, 갈색 테두리 둥근 버튼, 둥근 카드, 노란 꼬리표, 크림색 아래 띠 */
+:root {
+  --green: #00AE53; --green-deep: #008F44; --green-soft: #E8FFCD; --leaf: #ABD261;
+  --brown: #563429; --orange: #F17423; --yellow: #FFE27A; --cream: #FFFDEE;
+  --ink: #111; --ink-2: #444; --ink-3: #777; --line: #DDD; --soft: #F5F5F5; --paper: #FFF;
+  --wait: #B85C00; --wait-bg: #FFF1DC; --err: #D93025; --err-bg: #FDECEA;
+  --f-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-round: "Jua", "Noto Sans KR", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.6; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid rgba(0,174,83,.4); outline-offset: 2px; }
+
+/* 위 띠·머리 */
+.notice { background: var(--soft); font-size: 13px; color: var(--ink-2); }
+.notice .in-w { display: flex; justify-content: space-between; gap: 12px; padding-block: 8px; }
+.in-w { max-width: 960px; margin: 0 auto; padding-inline: 16px; }
+.gnb { border-bottom: 2px solid var(--green); }
+.gnb .in-w { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.brand svg { width: 38px; height: 38px; flex: none; }
+.brand b { font-family: var(--f-round); font-weight: 400; font-size: 26px; color: var(--green); line-height: 1; }
+.brand small { display: block; font-size: 13px; color: var(--ink-3); font-weight: 500; margin-top: 3px; }
+.gnb nav { display: flex; gap: 22px; font-weight: 700; font-size: 16px; }
+.gnb nav a { color: var(--ink); text-decoration: none; }
+.gnb nav a:hover { color: var(--green); }
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 22px; }
+
+/* 배너 */
+.hero { border-radius: 18px; overflow: hidden; position: relative; padding: 26px 26px 24px;
+  background: radial-gradient(120% 90% at 100% 0%, #D7F0FF 0%, transparent 55%), radial-gradient(90% 80% at 0% 100%, var(--green-soft) 0%, transparent 60%), #F3FBFF;
+  display: grid; gap: 12px; }
+.hero__tag { justify-self: start; background: var(--yellow); color: var(--brown); font-weight: 800; font-size: 14px; border-radius: 8px; padding: 4px 12px; }
+.hero h1 { font-family: var(--f-round); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.2; color: var(--brown); }
+.hero h1 span { color: var(--green); }
+.hero p { margin: 0; color: var(--ink-2); font-size: 16px; max-width: 34em; }
+.hero__meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero__meta span { background: rgba(255,255,255,.85); border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: 14px; font-weight: 700; }
+.hero__art { position: absolute; right: 18px; bottom: 10px; width: 150px; height: 150px; opacity: .95; pointer-events: none; }
+
+/* 자리 현황 */
+.status { border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; display: grid; gap: 14px; background: var(--paper); }
+.status__top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.badge { display: inline-flex; align-items: center; border-radius: 6px; padding: 3px 12px; font-size: 14px; font-weight: 800; color: #fff; background: var(--ink-3); }
+.badge--open { background: var(--green); } .badge--wait { background: var(--orange); } .badge--soon { background: #3D8BFD; } .badge--full { background: var(--err); }
+.status__when { font-size: 14px; color: var(--ink-2); }
+.status__when b { color: var(--green-deep); font-variant-numeric: tabular-nums; }
+.score { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-end; }
+.score div { display: grid; }
+.score span { font-size: 13px; color: var(--ink-3); font-weight: 700; }
+.score b { font-family: var(--f-round); font-weight: 400; font-size: 54px; line-height: 1; color: var(--green); font-variant-numeric: tabular-nums; }
+.score b small { font-family: var(--f-body); font-size: 17px; color: var(--ink-3); font-weight: 700; margin-left: 4px; }
+.score .w b { font-size: 36px; color: var(--orange); }
+.seats { display: grid; grid-template-columns: repeat(20, 1fr); gap: 6px; }
+.seat { aspect-ratio: 1; border-radius: 50%; background: var(--green-soft); border: 2px solid var(--leaf); display: grid; place-items: center; }
+.seat svg { width: 70%; height: 70%; opacity: 0; }
+.seat--taken { background: var(--green); border-color: var(--green); }
+.seat--taken svg { opacity: 1; }
+.status__note { margin: 0; font-size: 14px; color: var(--ink-3); }
+
+/* 탭(갈색 테두리 둥근 버튼) */
+.tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.tab { border: 1.5px solid var(--brown); background: var(--paper); color: var(--ink); border-radius: 999px; height: 44px; padding: 0 22px; font-weight: 700; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--brown); color: #fff; }
+
+/* 카드·폼 */
+.card { border: 1px solid var(--line); border-radius: 18px; padding: 24px 22px; display: grid; gap: 18px; background: var(--paper); }
+.card h2 { font-size: 21px; font-weight: 900; }
+.card h2::before { content: ""; display: inline-block; width: 6px; height: 18px; border-radius: 3px; background: var(--green); margin-right: 8px; vertical-align: -2px; }
+.row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.f { display: grid; gap: 6px; min-width: 0; }
+.f > span { font-size: 14px; font-weight: 700; }
+.f > span i { font-style: normal; color: var(--ink-3); font-weight: 500; }
+.in { height: 48px; border: 1.5px solid var(--line); border-radius: 10px; padding: 0 14px; background: var(--paper); width: 100%; min-width: 0; font-size: 17px; }
+.in:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 3px rgba(0,174,83,.18); }
+.in[readonly] { background: var(--soft); color: var(--ink-2); }
+.hint { font-size: 13px; color: var(--ink-3); margin: 0; }
+.agree { background: var(--soft); border-radius: 14px; padding: 16px; display: grid; gap: 10px; }
+.agree h3 { font-size: 15px; font-weight: 800; }
+.agree table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--paper); }
+.agree th, .agree td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+.agree th { background: #FAFAFA; color: var(--ink-2); width: 6.5em; font-weight: 700; }
+.ck { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-weight: 600; font-size: 15px; }
+.ck input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--green); flex: none; }
+.ck em { font-style: normal; color: var(--green-deep); font-weight: 800; }
+.radios { display: flex; gap: 20px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 0 24px; border-radius: 999px; border: 0; font-weight: 800; font-size: 18px; cursor: pointer; background: var(--green); color: #fff; width: 100%; }
+.btn:hover:not(:disabled) { background: var(--green-deep); }
+.btn:disabled { background: #BDBDBD; cursor: not-allowed; }
+.btn--line { background: var(--paper); color: var(--brown); border: 1.5px solid var(--brown); height: 48px; font-size: 16px; }
+.btn--line:hover:not(:disabled) { background: var(--cream); }
+.btn--danger { background: var(--paper); color: var(--err); border: 1.5px solid var(--err); height: 48px; font-size: 16px; }
+.btn--danger:hover:not(:disabled) { background: var(--err-bg); }
+.msg { border-radius: 10px; padding: 12px 14px; font-weight: 600; font-size: 15px; margin: 0; background: var(--err-bg); color: var(--err); }
+
+/* 결과 */
+.result { border-radius: 16px; padding: 20px; display: grid; gap: 8px; }
+.result--ok { background: var(--green-soft); } .result--wait { background: var(--wait-bg); } .result--off { background: var(--soft); }
+.result__tag { font-family: var(--f-round); font-size: 32px; line-height: 1.15; }
+.result--ok .result__tag { color: var(--green-deep); } .result--wait .result__tag { color: var(--wait); } .result--off .result__tag { color: var(--ink-2); }
+.result p { margin: 0; }
+.result dl { display: grid; grid-template-columns: 5.5em 1fr; gap: 2px 10px; margin: 4px 0 0; font-size: 15px; }
+.result dt { color: var(--ink-2); font-weight: 700; } .result dd { margin: 0; overflow-wrap: anywhere; }
+.confirm { border: 1.5px solid var(--err); border-radius: 14px; padding: 14px; display: grid; gap: 10px; }
+.confirm .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* 일정·안내 */
+.days { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.day { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: grid; }
+.day__h { background: var(--green-soft); padding: 12px 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.day__h b { font-family: var(--f-round); font-weight: 400; font-size: 22px; color: var(--brown); }
+.day__h span { background: var(--green); color: #fff; border-radius: 6px; font-size: 12px; font-weight: 800; padding: 1px 8px; white-space: nowrap; }
+.day__b { padding: 12px 14px; display: grid; gap: 4px; font-size: 14px; }
+.day__b strong { font-size: 16px; }
+.day__b small { color: var(--ink-3); font-size: 13px; }
+.info dl { display: grid; grid-template-columns: 6em 1fr; gap: 8px 14px; margin: 0; }
+.info dt { font-weight: 800; color: var(--ink-2); } .info dd { margin: 0; min-width: 0; }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.step { background: var(--cream); border-radius: 14px; padding: 12px; display: grid; gap: 2px; font-size: 14px; }
+.step b { color: var(--green-deep); font-weight: 900; font-size: 13px; }
+.step strong { font-size: 15px; color: var(--brown); }
+.step span { color: var(--ink-2); }
+
+.foot { background: #333; color: #BBB; font-size: 13px; }
+.foot .in-w { padding-block: 22px; display: grid; gap: 4px; }
+.foot a { color: var(--orange); font-weight: 700; text-decoration: none; }
+
+@media (max-width: 720px) {
+  .gnb nav { display: none; }
+  .hero__art { width: 96px; height: 96px; right: 8px; bottom: 6px; opacity: .5; }
+  .days { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .seats { grid-template-columns: repeat(10, 1fr); }
+  .score b { font-size: 46px; }
+}
+@media (max-width: 520px) {
+  .row { grid-template-columns: 1fr 1fr; } .row .f--name { grid-column: 1 / -1; }
+  .info dl, .result dl { grid-template-columns: 1fr; } .info dd, .result dd { margin-bottom: 6px; }
+  .notice .in-w span:last-child { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) { .seat, .seat svg { transition: background .4s, opacity .4s; } }
+</style>
+</head>
+<body>
+<div class="notice"><div class="in-w"><span>📢 1학년 대상 디지털 새싹 방과후·주말 캠프 선착순 20명 모집</span><span id="today"></span></div></div>
+<header class="gnb"><div class="in-w">
+  <a class="brand" href="#top" aria-label="맨 위로">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#E8FFCD"/><path d="M32 52V30" stroke="#00AE53" stroke-width="5" stroke-linecap="round"/><path d="M32 33c-2-10-10-14-19-13 0 10 8 15 19 13z" fill="#00AE53"/><path d="M32 29c2-11 11-15 20-14 0 11-9 16-20 14z" fill="#ABD261"/></svg>
+    <span><b>디지털 새싹 캠프</b><small>구월중학교 · 참가 신청</small></span>
+  </a>
+  <nav><a href="#form">참가 신청</a><a href="#schedule">일정</a><a href="#about">프로그램 안내</a></nav>
+</div></header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <span class="hero__tag">방문형 | 인공지능 소양</span>
+    <h1>AI 플레이그라운드:<br><span>n8n 에이전트 메이커</span></h1>
+    <p>학교생활 속 귀찮은 반복 일을 AI 에이전트로 자동화해 봐요. 노드를 이어 데이터를 모으고, 조건에 따라 알림을 보내고, 팀 프로젝트로 나만의 자동화 도우미를 만들어요.</p>
+    <div class="hero__meta"><span>1학년 선착순 20명</span><span>3일 · 8차시</span><span>3층 다목적실</span></div>
+    <svg class="hero__art" viewBox="0 0 160 160" aria-hidden="true">
+      <rect x="18" y="58" width="124" height="80" rx="14" fill="#fff" stroke="#563429" stroke-width="3"/>
+      <circle cx="46" cy="98" r="11" fill="#00AE53"/><circle cx="114" cy="80" r="11" fill="#F17423"/><circle cx="114" cy="118" r="11" fill="#ABD261"/>
+      <path d="M57 98c20 0 22-18 46-18M57 98c20 0 22 20 46 20" fill="none" stroke="#563429" stroke-width="3" stroke-linecap="round"/>
+      <path d="M80 56V30" stroke="#00AE53" stroke-width="5" stroke-linecap="round"/><path d="M80 34c-3-12-12-16-22-15 0 12 9 17 22 15z" fill="#00AE53"/><path d="M80 30c3-13 13-17 23-16 0 13-10 18-23 16z" fill="#ABD261"/>
+    </svg>
+  </section>
+
+  <section class="status" aria-live="polite">
+    <div class="status__top"><span class="badge" id="badge">자리 현황 불러오는 중</span><span class="status__when" id="when"></span></div>
+    <div class="score">
+      <div><span>남은 자리</span><b id="left">–<small>/ 20</small></b></div>
+      <div class="w"><span>대기 신청</span><b id="wait">–<small>/ 5</small></b></div>
+    </div>
+    <div class="seats" id="seats" aria-hidden="true"></div>
+    <p class="status__note" id="note">누른 순서대로 자리가 정해져요. 20명이 차면 대기 신청으로 바뀌고, 대기까지 차면 마감돼요.</p>
+  </section>
+
+  <div class="tabs" role="tablist" id="form">
+    <button class="tab" role="tab" id="tabApply" aria-selected="true" aria-controls="paneApply">신청하기</button>
+    <button class="tab" role="tab" id="tabCheck" aria-selected="false" aria-controls="paneCheck">내 신청 확인·취소</button>
+  </div>
+
+  <section class="card" id="paneApply" role="tabpanel" aria-labelledby="tabApply">
+    <form id="applyForm" novalidate>
+      <div style="display:grid;gap:16px">
+        <h2>참가 신청서</h2>
+        <div class="row">
+          <label class="f"><span>학년</span><input class="in" value="1학년" readonly tabindex="-1"></label>
+          <label class="f"><span>반</span><select class="in" id="aCls"><option value="">반 선택</option></select></label>
+          <label class="f"><span>번호</span><input class="in" id="aNum" type="number" inputmode="numeric" min="1" max="50" placeholder="예: 7"></label>
+          <label class="f f--name" style="grid-column:1/-1"><span>이름</span><input class="in" id="aName" maxlength="20" autocomplete="off" placeholder="학생 이름"></label>
+        </div>
+        <label class="f"><span>연락처 <i>(학생 휴대전화, 없으면 보호자)</i></span><input class="in" id="aPhone" inputmode="tel" maxlength="13" autocomplete="tel" placeholder="010-1234-5678"></label>
+        <p class="hint">결과 안내 문자는 이 연락처로 가요. 신청을 확인하거나 취소할 때도 이름과 연락처가 필요해요.</p>
+        <div class="agree">
+          <h3>참석 약속</h3>
+          <label class="ck"><input type="checkbox" id="aDays"><span>12월 3일(목)·4일(금)·5일(토) <em>3일 모두</em> 참석할 수 있어요 (필수)</span></label>
+          <p class="hint">8차시를 모두 들어야 수료할 수 있어요. 하루라도 빠질 것 같으면 다른 친구에게 자리를 양보해 주세요.</p>
+          <h3>개인정보 수집·이용 동의</h3>
+          <table>
+            <tr><th>모으는 정보</th><td>학년·반·번호, 이름, 연락처</td></tr>
+            <tr><th>쓰는 곳</th><td>참가자 선정·연락, 출석 확인, 디지털 새싹 운영기관에 참가자 명단 제출</td></tr>
+            <tr><th>보관 기간</th><td>행사를 마치고 결과 보고가 끝나면 지워요 (2027년 2월 28일까지)</td></tr>
+          </table>
+          <p class="hint">동의하지 않을 수 있지만, 그러면 신청할 수 없어요.</p>
+          <label class="ck"><input type="checkbox" id="aPriv"><span>위 개인정보 수집·이용에 동의해요 (필수)</span></label>
+          <label class="ck"><input type="checkbox" id="aGuard"><span>보호자와 상의했고, 보호자가 참가에 동의했어요 (필수)</span></label>
+          <h3>사진 촬영·활용 (선택)</h3>
+          <p class="hint" style="font-size:14px">활동 사진과 결과물을 디지털 새싹 결과 보고와 학교 교육활동 안내에 쓸 수 있어요. 동의하지 않아도 참가할 수 있어요.</p>
+          <div class="radios">
+            <label class="ck"><input type="radio" name="photo" value="yes"><span>동의해요</span></label>
+            <label class="ck"><input type="radio" name="photo" value="no"><span>동의하지 않아요</span></label>
+          </div>
+        </div>
+        <p class="msg" id="aMsg" hidden></p>
+        <button class="btn" id="aBtn" type="submit" disabled>신청하기</button>
+      </div>
+    </form>
+    <div id="aDone" style="display:grid;gap:12px" hidden></div>
+  </section>
+
+  <section class="card" id="paneCheck" role="tabpanel" aria-labelledby="tabCheck" hidden>
+    <form id="checkForm" novalidate>
+      <div style="display:grid;gap:16px">
+        <h2>내 신청 확인·취소</h2>
+        <div class="row">
+          <label class="f"><span>학년</span><input class="in" value="1학년" readonly tabindex="-1"></label>
+          <label class="f"><span>반</span><select class="in" id="cCls"><option value="">반 선택</option></select></label>
+          <label class="f"><span>번호</span><input class="in" id="cNum" type="number" inputmode="numeric" min="1" max="50"></label>
+          <label class="f f--name" style="grid-column:1/-1"><span>이름</span><input class="in" id="cName" maxlength="20" autocomplete="off"></label>
+        </div>
+        <label class="f"><span>신청할 때 적은 연락처</span><input class="in" id="cPhone" inputmode="tel" maxlength="13" placeholder="010-1234-5678"></label>
+        <p class="msg" id="cMsg" hidden></p>
+        <button class="btn btn--line" id="cBtn" type="submit">확인하기</button>
+      </div>
+    </form>
+    <div id="cOut" hidden></div>
+  </section>
+
+  <section class="card" id="schedule">
+    <h2>교육 일정</h2>
+    <div class="days" id="days"></div>
+    <p class="hint" id="daysNote"></p>
+  </section>
+
+  <section class="card info" id="about">
+    <h2>프로그램 안내</h2>
+    <dl>
+      <dt>프로그램</dt><dd>디지털 새싹 「AI 플레이그라운드: n8n 에이전트 메이커」 (기본 과정, 인공지능 소양)</dd>
+      <dt>대상</dt><dd>구월중학교 1학년 희망 학생 선착순 20명</dd>
+      <dt>장소</dt><dd>구월중학교 3층 다목적실</dd>
+      <dt>운영</dt><dd>제주대학교 산학협력단 (디지털 새싹 운영기관) 강사, 본교 담당 선생님</dd>
+      <dt>수업 방식</dt><dd>이론 20% · 실습 50% · 팀 프로젝트와 발표 30%, 노트북 1인 1대</dd>
+      <dt>비용</dt><dd>무료</dd>
+    </dl>
+    <div class="steps">
+      <div class="step"><b>1·2차시 진입기</b><strong>자동화가 뭘까?</strong><span>n8n 화면과 노드 연결 체험</span></div>
+      <div class="step"><b>3·4차시 도약기</b><strong>데이터 모으고 나누기</strong><span>폼·시트 연동, 조건 분기, 알림</span></div>
+      <div class="step"><b>5·6차시 성장기</b><strong>AI와 함께 자동화</strong><span>AI 요약·분류, 오류와 윤리 점검</span></div>
+      <div class="step"><b>7·8차시 프로젝트</b><strong>우리 팀 AI 에이전트</strong><span>생활 문제 해결, 시연과 발표</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><div class="in-w">
+  <span>구월중학교 · 디지털 새싹 캠프 참가 신청</span>
+  <span>문의: 수학과 <a href="tel:032-460-6539">032-460-6539</a></span>
+</div></footer>
+
+<script>
+// ===== 고치는 곳 =====
+// Apps Script 웹 앱 주소(배포 후 받은 /exec 주소). 시험할 때는 주소 뒤에 ?api=다른주소 를 붙이면 그 주소를 쓴다.
+const API_URL = 'https://script.google.com/macros/s/AKfycbxYtjjIpNEELFJeSmD1xlQ0s8P78VKKoX_S4EUsuRNXTDK1Mm1hODtZ2sM-2cQ4Uz1l/exec';
+// 교육 일정 (날짜가 바뀌면 여기만 고치면 화면이 바뀐다)
+const DAYS = [
+  { date: '12월 3일', dow: '목', when: '방과후', hours: 3, lessons: '1~3차시', time: '시간은 추후 안내' },
+  { date: '12월 4일', dow: '금', when: '방과후', hours: 2, lessons: '4~5차시', time: '시간은 추후 안내' },
+  { date: '12월 5일', dow: '토', when: '오전', hours: 3, lessons: '6~8차시', time: '시간은 추후 안내' },
+];
+const DAYS_NOTE = '날짜는 운영기관과 조율 중이에요. 바뀌면 신청한 연락처로 다시 알려 드려요.';
+// =====================
+
+const API = new URLSearchParams(location.search).get('api') || API_URL;
+const ERR = {
+  closed: '지금은 신청을 받지 않아요.', notyet: '아직 신청 시간이 아니에요. 열리는 시각에 다시 눌러 주세요.', ended: '신청 기간이 끝났어요.',
+  full: '정원과 대기 인원이 모두 찼어요. 신청이 마감됐어요.', busy: '신청이 몰려 잠시 밀렸어요. 한 번 더 눌러 주세요.',
+  already: '이 반·번호로 이미 신청돼 있어요. [내 신청 확인·취소]에서 확인해 주세요.',
+  cls: '반을 골라 주세요.', num: '번호를 확인해 주세요.', name: '이름을 적어 주세요.', phone: '연락처를 확인해 주세요. (예: 010-1234-5678)',
+  consentAllDays: '3일 모두 참석할 수 있는지 체크해 주세요.', consentPrivacy: '개인정보 수집·이용 동의에 체크해 주세요.',
+  consentGuardian: '보호자 동의에 체크해 주세요.', photo: '사진 촬영·활용 동의 여부를 골라 주세요.',
+  nomatch: '일치하는 신청을 찾지 못했어요. 반·번호·이름·연락처를 신청할 때와 똑같이 적어 주세요.',
+  noapi: '신청 페이지를 준비하고 있어요.',
+};
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const two = (n) => String(n).padStart(2, '0');
+// 시각은 언제나 한국 시간으로 보여 준다
+const kst = (ms) => { const d = new Date(ms + 9 * 3600e3); return { M: d.getUTCMonth() + 1, D: d.getUTCDate(), w: '일월화수목금토'[d.getUTCDay()], h: two(d.getUTCHours()), m: two(d.getUTCMinutes()), s: two(d.getUTCSeconds()) }; };
+const when = (ms) => { const k = kst(ms); return `${k.M}월 ${k.D}일(${k.w}) ${k.h}:${k.m}`; };
+const clock = (ms) => { const k = kst(ms); return `${k.M}/${k.D} ${k.h}:${k.m}:${k.s}`; };
+const left = (t) => { const s = Math.max(0, Math.floor(t / 1000)); const D = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return `${D ? D + '일 ' : ''}${two(h)}:${two(m)}:${two(x)}`; };
+
+// Apps Script 는 text/plain 으로 보내야 브라우저 사전 확인(CORS) 없이 받는다
+async function call(action, data = {}) {
+  if (!API) throw new Error('noapi');
+  let res;
+  try { res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, ...data }), redirect: 'follow' }); }
+  catch { throw new Error('network'); }
+  const body = await res.json().catch(() => ({}));
+  if (!body.ok) throw new Error(body.error || 'error');
+  return body.result;
+}
+const errText = (e) => ERR[e?.message] || (e?.message === 'network' ? '인터넷 연결을 확인해 주세요.' : '잠시 연결이 불안정해요. 다시 눌러 주세요.');
+
+// ---------- 일정 ----------
+$('#days').innerHTML = DAYS.map((d, i) => `<div class="day"><div class="day__h"><b>${esc(d.date)}(${esc(d.dow)})</b><span>${i + 1}일차</span></div>
+  <div class="day__b"><strong>${esc(d.when)} ${d.hours}시간</strong><span>${esc(d.lessons)}</span><small>${esc(d.time)}</small></div></div>`).join('');
+$('#daysNote').textContent = DAYS_NOTE;
+{ const k = kst(Date.now()); $('#today').textContent = `${new Date().getFullYear()}.${two(k.M)}.${two(k.D)}`; }
+
+// ---------- 자리 현황 ----------
+const st = { s: null, skew: 0, busy: false };
+function phase() {
+  const s = st.s; if (!s) return API ? 'loading' : 'closed';
+  const now = Date.now() + st.skew;
+  if (!s.open) return 'closed';
+  if (s.opensAt && now < s.opensAt) return 'soon';
+  if (s.closesAt && now > s.closesAt) return 'ended';
+  if (s.confirmed < s.cap) return 'open';
+  if (s.waiting < s.waitCap) return 'wait';
+  return 'full';
+}
+const BADGE = { loading: ['자리 현황 불러오는 중', ''], closed: ['신청 준비 중', ''], soon: ['곧 신청이 열려요', 'soon'], open: ['모집 중', 'open'], wait: ['정원 마감 · 대기 접수 중', 'wait'], full: ['모집 마감', 'full'], ended: ['모집 기간 끝', ''] };
+const SPROUT = '<svg viewBox="0 0 24 24"><path d="M12 21v-8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M12 14c-1-4-4-6-8-5 0 4 4 6 8 5z" fill="#fff"/><path d="M12 12c1-5 5-7 9-6 0 5-4 7-9 6z" fill="#E8FFCD"/></svg>';
+function draw() {
+  const s = st.s, p = phase(), [label, cls] = BADGE[p];
+  const b = $('#badge'); b.textContent = label; b.className = 'badge' + (cls ? ' badge--' + cls : '');
+  const cap = s ? s.cap : 20, waitCap = s ? s.waitCap : 5;
+  if (s) {
+    $('#left').innerHTML = `${Math.max(0, cap - s.confirmed)}<small>/ ${cap}</small>`;
+    $('#wait').innerHTML = `${s.waiting}<small>/ ${waitCap}</small>`;
+    $('#note').textContent = `누른 순서대로 자리가 정해져요. ${cap}명이 차면 ${waitCap ? `대기 ${waitCap}명까지 받고, 대기까지 차면 ` : ''}마감돼요.`;
+  }
+  const seats = $('#seats');
+  if (seats.childElementCount !== cap) seats.innerHTML = Array.from({ length: cap }, () => `<span class="seat">${SPROUT}</span>`).join('');
+  [...seats.children].forEach((el, i) => el.classList.toggle('seat--taken', !!s && i < s.confirmed));
+  const w = $('#when');
+  if (p === 'soon') w.innerHTML = `${esc(when(s.opensAt))} 시작 · <b id="count">${left(s.opensAt - Date.now() - st.skew)}</b> 남음`;
+  else if ((p === 'open' || p === 'wait') && s.closesAt) w.textContent = `${when(s.closesAt)}까지`;
+  else if (p === 'closed' && !API) w.textContent = ERR.noapi;
+  else w.textContent = '';
+  const btn = $('#aBtn');
+  btn.disabled = st.busy || !['open', 'wait'].includes(p);
+  btn.textContent = st.busy ? '보내는 중…' : p === 'wait' ? '대기로 신청하기' : p === 'soon' ? '시작 시각에 열려요' : ['full', 'ended', 'closed'].includes(p) ? '지금은 신청할 수 없어요' : '신청하기';
+}
+async function refresh() {
+  if (!API) { draw(); return; }
+  try { const s = await call('status'); st.s = s; st.skew = s.now - Date.now(); }
+  catch { if (!st.s) $('#badge').textContent = '자리 현황을 불러오지 못했어요'; }
+  draw();
+}
+let lastPhase = '';
+setInterval(() => {
+  const p = phase(), c = $('#count');
+  if (c && st.s) c.textContent = left(st.s.opensAt - Date.now() - st.skew);
+  if (p !== lastPhase) { lastPhase = p; draw(); if (p === 'open') refresh(); }
+}, 1000);
+// Apps Script 는 한꺼번에 많이 부르면 느려지므로 15초마다, 화면이 보일 때만
+setInterval(() => { if (!document.hidden) refresh(); }, 15000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+
+// ---------- 입력 도우미 ----------
+const CLASSES = 10;
+for (const id of ['#aCls', '#cCls']) $(id).insertAdjacentHTML('beforeend', Array.from({ length: CLASSES }, (_, i) => `<option value="${i + 1}">${i + 1}반</option>`).join(''));
+const fmtPhone = (v) => { const d = String(v).replace(/\D/g, '').slice(0, 11); return d.length < 4 ? d : d.length < 8 ? `${d.slice(0, 3)}-${d.slice(3)}` : d.length === 10 ? `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}` : `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`; };
+for (const id of ['#aPhone', '#cPhone']) $(id).addEventListener('input', (e) => { e.target.value = fmtPhone(e.target.value); });
+const okPhone = (v) => /^01[016789]\d{7,8}$/.test(v.replace(/\D/g, ''));
+const person = (px) => ({ cls: Number($(`#${px}Cls`).value), num: Number($(`#${px}Num`).value), name: $(`#${px}Name`).value.trim(), phone: $(`#${px}Phone`).value });
+function localErr(p) {
+  if (!p.cls) return 'cls'; if (!(Number.isInteger(p.num) && p.num >= 1 && p.num <= 50)) return 'num';
+  if (p.name.replace(/\s/g, '').length < 2) return 'name'; if (!okPhone(p.phone)) return 'phone'; return '';
+}
+const show = (el, text) => { el.textContent = text; el.hidden = !text; };
+
+// ---------- 탭 ----------
+function tab(which) {
+  const a = which === 'apply';
+  $('#tabApply').setAttribute('aria-selected', a); $('#tabCheck').setAttribute('aria-selected', !a);
+  $('#paneApply').hidden = !a; $('#paneCheck').hidden = a;
+}
+$('#tabApply').onclick = () => tab('apply'); $('#tabCheck').onclick = () => tab('check');
+
+// ---------- 신청 ----------
+function resultHTML(r, p, extra = '') {
+  const ok = r.status === 'confirmed', wait = r.status === 'waitlist';
+  const tag = ok ? '참가 확정!' : wait ? `대기 ${r.position || ''}번` : '취소된 신청';
+  const body = ok ? `${DAYS.map((d) => `${d.date}(${d.dow})`).join('·')} 3일 동안 3층 다목적실에서 만나요. 자세한 시간은 문자로 다시 알려 드려요.`
+    : wait ? '확정된 친구가 취소하면 대기 순서대로 자동으로 확정돼요. [내 신청 확인·취소]에서 언제든 확인할 수 있어요.'
+    : r.canceledBy === 'teacher' ? '선생님이 이 신청을 취소했어요. 궁금한 점은 담당 선생님께 물어봐 주세요.' : '이 신청은 취소됐어요. 다시 신청하면 맨 뒤 순서로 들어가요.';
+  return `<div class="result result--${ok ? 'ok' : wait ? 'wait' : 'off'}"><div class="result__tag">${tag}</div><p>${body}</p>
+    <dl><dt>학생</dt><dd>1학년 ${p.cls}반 ${p.num}번 ${esc(p.name)}</dd><dt>연락처</dt><dd>${esc(fmtPhone(p.phone))}</dd>
+    ${r.appliedMs ? `<dt>신청 시각</dt><dd>${clock(r.appliedMs)}${r.promoted ? ' (대기에서 확정)' : ''}</dd>` : ''}</dl></div>${extra}`;
+}
+$('#applyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const p = person('a'), msg = $('#aMsg'), radio = document.querySelector('input[name=photo]:checked');
+  const bad = localErr(p) || (!$('#aDays').checked ? 'consentAllDays' : !$('#aPriv').checked ? 'consentPrivacy' : !$('#aGuard').checked ? 'consentGuardian' : !radio ? 'photo' : '');
+  if (bad) { show(msg, ERR[bad]); return; }
+  show(msg, ''); st.busy = true; draw();
+  try {
+    const r = await call('apply', { ...p, consentAllDays: true, consentPrivacy: true, consentGuardian: true, photo: radio.value });
+    $('#applyForm').hidden = true;
+    const done = $('#aDone'); done.hidden = false;
+    done.innerHTML = resultHTML(r, p, '<button class="btn btn--line" id="again" type="button">다른 학생 신청하기</button>');
+    $('#again').onclick = () => { $('#applyForm').reset(); $('#applyForm').hidden = false; done.hidden = true; };
+    done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (err) { show(msg, errText(err)); }
+  st.busy = false; refresh();
+});
+$('#applyForm').addEventListener('input', () => show($('#aMsg'), ''));
+
+// ---------- 확인·취소 ----------
+async function doCheck() {
+  const p = person('c'), msg = $('#cMsg'), out = $('#cOut');
+  const bad = localErr(p);
+  if (bad) { show(msg, ERR[bad]); return; }
+  show(msg, ''); $('#cBtn').disabled = true;
+  try {
+    const r = await call('check', p);
+    out.hidden = false;
+    const live = ['confirmed', 'waitlist'].includes(r.status);
+    out.innerHTML = resultHTML(r, p, live ? '<button class="btn btn--danger" id="cancelAsk" type="button">신청 취소하기</button><div id="cancelBox"></div>' : '');
+    const ask = $('#cancelAsk');
+    if (ask) ask.onclick = () => {
+      ask.hidden = true;
+      $('#cancelBox').innerHTML = `<div class="confirm"><b>정말 취소할까요?</b><span class="hint" style="font-size:14px">${r.status === 'confirmed' ? '내 자리는 대기 1번 친구에게 바로 넘어가요.' : '대기 순서가 없어져요.'} 다시 신청하면 맨 뒤로 가요.</span>
+        <div class="acts"><button class="btn btn--line" id="cancelNo" type="button">그대로 두기</button><button class="btn btn--danger" id="cancelYes" type="button">취소하기</button></div></div>`;
+      $('#cancelNo').onclick = () => { $('#cancelBox').innerHTML = ''; ask.hidden = false; };
+      $('#cancelYes').onclick = async () => {
+        $('#cancelYes').disabled = true;
+        try { await call('cancel', p); await doCheck(); refresh(); }
+        catch (err) { $('#cancelBox').innerHTML = `<p class="msg">${esc(errText(err))}</p>`; ask.hidden = false; }
+      };
+    };
+  } catch (err) { out.hidden = true; show(msg, errText(err)); }
+  $('#cBtn').disabled = false;
+}
+$('#checkForm').addEventListener('submit', (e) => { e.preventDefault(); doCheck(); });
+$('#checkForm').addEventListener('input', () => show($('#cMsg'), ''));
+
+refresh();
+</script>
+</body>
+</html>
