@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>디지털 새싹 참가 신청</title>
-<meta name="description" content="구월중학교 1학년 디지털 새싹 「AI 플레이그라운드: n8n 에이전트 메이커」 선착순 20명 참가 신청">
+<meta name="description" content="구월중학교 전교생 디지털 새싹 「AI 플레이그라운드: n8n 에이전트 메이커」 선착순 20명 참가 신청">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%2300AE53'/><path d='M32 50V30' stroke='white' stroke-width='5' stroke-linecap='round'/><path d='M32 32c-2-9-9-13-17-12 0 9 7 14 17 12z' fill='white'/><path d='M32 28c2-10 10-14 18-13 0 10-8 15-18 13z' fill='%23ABD261'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -159,7 +159,7 @@ button, input, select { font: inherit; color: inherit; }
 </style>
 </head>
 <body>
-<div class="notice"><div class="in-w"><span>📢 1학년 대상 디지털 새싹 방과후·주말 캠프 선착순 20명 모집</span><span id="today"></span></div></div>
+<div class="notice"><div class="in-w"><span>📢 1~3학년 대상 디지털 새싹 방과후·주말 캠프 선착순 20명 모집</span><span id="today"></span></div></div>
 <header class="gnb"><div class="in-w">
   <a class="brand" href="#top" aria-label="맨 위로">
     <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#E8FFCD"/><path d="M32 52V30" stroke="#00AE53" stroke-width="5" stroke-linecap="round"/><path d="M32 33c-2-10-10-14-19-13 0 10 8 15 19 13z" fill="#00AE53"/><path d="M32 29c2-11 11-15 20-14 0 11-9 16-20 14z" fill="#ABD261"/></svg>
@@ -173,7 +173,7 @@ button, input, select { font: inherit; color: inherit; }
     <span class="hero__tag">방문형 | 인공지능 소양</span>
     <h1>AI 플레이그라운드:<br><span>n8n 에이전트 메이커</span></h1>
     <p>학교생활 속 귀찮은 반복 일을 AI 에이전트로 자동화해 봐요. 노드를 이어 데이터를 모으고, 조건에 따라 알림을 보내고, 팀 프로젝트로 나만의 자동화 도우미를 만들어요.</p>
-    <div class="hero__meta"><span>1학년 선착순 20명</span><span>3일 · 8차시</span><span>3층 다목적실</span></div>
+    <div class="hero__meta"><span>1~3학년 선착순 20명</span><span>3일 · 8차시</span><span>3층 다목적실</span></div>
     <svg class="hero__art" viewBox="0 0 160 160" aria-hidden="true">
       <rect x="18" y="58" width="124" height="80" rx="14" fill="#fff" stroke="#563429" stroke-width="3"/>
       <circle cx="46" cy="98" r="11" fill="#00AE53"/><circle cx="114" cy="80" r="11" fill="#F17423"/><circle cx="114" cy="118" r="11" fill="#ABD261"/>
@@ -202,7 +202,7 @@ button, input, select { font: inherit; color: inherit; }
       <div style="display:grid;gap:16px">
         <h2>참가 신청서</h2>
         <div class="row">
-          <label class="f"><span>학년</span><input class="in" value="1학년" readonly tabindex="-1"></label>
+          <label class="f"><span>학년</span><select class="in" id="aGrade"><option value="">학년 선택</option><option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option></select></label>
           <label class="f"><span>반</span><select class="in" id="aCls"><option value="">반 선택</option></select></label>
           <label class="f"><span>번호</span><input class="in" id="aNum" type="number" inputmode="numeric" min="1" max="50" placeholder="예: 7"></label>
           <label class="f f--name" style="grid-column:1/-1"><span>이름</span><input class="in" id="aName" maxlength="20" autocomplete="off" placeholder="학생 이름"></label>
@@ -241,7 +241,7 @@ button, input, select { font: inherit; color: inherit; }
       <div style="display:grid;gap:16px">
         <h2>내 신청 확인·취소</h2>
         <div class="row">
-          <label class="f"><span>학년</span><input class="in" value="1학년" readonly tabindex="-1"></label>
+          <label class="f"><span>학년</span><select class="in" id="cGrade"><option value="">학년 선택</option><option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option></select></label>
           <label class="f"><span>반</span><select class="in" id="cCls"><option value="">반 선택</option></select></label>
           <label class="f"><span>번호</span><input class="in" id="cNum" type="number" inputmode="numeric" min="1" max="50"></label>
           <label class="f f--name" style="grid-column:1/-1"><span>이름</span><input class="in" id="cName" maxlength="20" autocomplete="off"></label>
@@ -264,7 +264,7 @@ button, input, select { font: inherit; color: inherit; }
     <h2>프로그램 안내</h2>
     <dl>
       <dt>프로그램</dt><dd>디지털 새싹 「AI 플레이그라운드: n8n 에이전트 메이커」 (기본 과정, 인공지능 소양)</dd>
-      <dt>대상</dt><dd>구월중학교 1학년 희망 학생 선착순 20명</dd>
+      <dt>대상</dt><dd>구월중학교 1~3학년 희망 학생 선착순 20명</dd>
       <dt>장소</dt><dd>구월중학교 3층 다목적실</dd>
       <dt>운영</dt><dd>제주대학교 산학협력단 (디지털 새싹 운영기관) 강사, 본교 담당 선생님</dd>
       <dt>수업 방식</dt><dd>이론 20% · 실습 50% · 팀 프로젝트와 발표 30%, 노트북 1인 1대</dd>
@@ -294,18 +294,18 @@ const DAYS = [
   { date: '12월 4일', dow: '금', when: '방과후', hours: 2, lessons: '4~5차시', time: '시간은 추후 안내' },
   { date: '12월 5일', dow: '토', when: '오전', hours: 3, lessons: '6~8차시', time: '시간은 추후 안내' },
 ];
-const DAYS_NOTE = '날짜는 운영기관과 조율 중이에요. 바뀌면 신청한 연락처로 다시 알려 드려요.';
+const DAYS_NOTE = '자세한 시간이 정해지면 신청한 연락처로 다시 알려 드려요.';
 // =====================
 
 const API = new URLSearchParams(location.search).get('api') || API_URL;
 const ERR = {
   closed: '지금은 신청을 받지 않아요.', notyet: '아직 신청 시간이 아니에요. 열리는 시각에 다시 눌러 주세요.', ended: '신청 기간이 끝났어요.',
   full: '정원과 대기 인원이 모두 찼어요. 신청이 마감됐어요.', busy: '신청이 몰려 잠시 밀렸어요. 한 번 더 눌러 주세요.',
-  already: '이 반·번호로 이미 신청돼 있어요. [내 신청 확인·취소]에서 확인해 주세요.',
-  cls: '반을 골라 주세요.', num: '번호를 확인해 주세요.', name: '이름을 적어 주세요.', phone: '연락처를 확인해 주세요. (예: 010-1234-5678)',
+  already: '이 학년·반·번호로 이미 신청돼 있어요. [내 신청 확인·취소]에서 확인해 주세요.',
+  grade: '학년을 골라 주세요.', cls: '반을 골라 주세요.', num: '번호를 확인해 주세요.', name: '이름을 적어 주세요.', phone: '연락처를 확인해 주세요. (예: 010-1234-5678)',
   consentAllDays: '3일 모두 참석할 수 있는지 체크해 주세요.', consentPrivacy: '개인정보 수집·이용 동의에 체크해 주세요.',
   consentGuardian: '보호자 동의에 체크해 주세요.', photo: '사진 촬영·활용 동의 여부를 골라 주세요.',
-  nomatch: '일치하는 신청을 찾지 못했어요. 반·번호·이름·연락처를 신청할 때와 똑같이 적어 주세요.',
+  nomatch: '일치하는 신청을 찾지 못했어요. 학년·반·번호·이름·연락처를 신청할 때와 똑같이 적어 주세요.',
   noapi: '신청 페이지를 준비하고 있어요.',
 };
 const $ = (s) => document.querySelector(s);
@@ -387,14 +387,17 @@ setInterval(() => { if (!document.hidden) refresh(); }, 15000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
 
 // ---------- 입력 도우미 ----------
-const CLASSES = 10;
-for (const id of ['#aCls', '#cCls']) $(id).insertAdjacentHTML('beforeend', Array.from({ length: CLASSES }, (_, i) => `<option value="${i + 1}">${i + 1}반</option>`).join(''));
+const CLASSES = { 1: 10, 2: 11, 3: 11 }; // 학년별 반 수
+for (const px of ['a', 'c']) {
+  const fill = () => { $(`#${px}Cls`).innerHTML = '<option value="">반 선택</option>' + Array.from({ length: CLASSES[$(`#${px}Grade`).value] || 0 }, (_, i) => `<option value="${i + 1}">${i + 1}반</option>`).join(''); };
+  $(`#${px}Grade`).addEventListener('change', fill);
+}
 const fmtPhone = (v) => { const d = String(v).replace(/\D/g, '').slice(0, 11); return d.length < 4 ? d : d.length < 8 ? `${d.slice(0, 3)}-${d.slice(3)}` : d.length === 10 ? `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}` : `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`; };
 for (const id of ['#aPhone', '#cPhone']) $(id).addEventListener('input', (e) => { e.target.value = fmtPhone(e.target.value); });
 const okPhone = (v) => /^01[016789]\d{7,8}$/.test(v.replace(/\D/g, ''));
-const person = (px) => ({ cls: Number($(`#${px}Cls`).value), num: Number($(`#${px}Num`).value), name: $(`#${px}Name`).value.trim(), phone: $(`#${px}Phone`).value });
+const person = (px) => ({ grade: Number($(`#${px}Grade`).value), cls: Number($(`#${px}Cls`).value), num: Number($(`#${px}Num`).value), name: $(`#${px}Name`).value.trim(), phone: $(`#${px}Phone`).value });
 function localErr(p) {
-  if (!p.cls) return 'cls'; if (!(Number.isInteger(p.num) && p.num >= 1 && p.num <= 50)) return 'num';
+  if (!p.grade) return 'grade'; if (!p.cls) return 'cls'; if (!(Number.isInteger(p.num) && p.num >= 1 && p.num <= 50)) return 'num';
   if (p.name.replace(/\s/g, '').length < 2) return 'name'; if (!okPhone(p.phone)) return 'phone'; return '';
 }
 const show = (el, text) => { el.textContent = text; el.hidden = !text; };
@@ -415,7 +418,7 @@ function resultHTML(r, p, extra = '') {
     : wait ? '확정된 친구가 취소하면 대기 순서대로 자동으로 확정돼요. [내 신청 확인·취소]에서 언제든 확인할 수 있어요.'
     : r.canceledBy === 'teacher' ? '선생님이 이 신청을 취소했어요. 궁금한 점은 담당 선생님께 물어봐 주세요.' : '이 신청은 취소됐어요. 다시 신청하면 맨 뒤 순서로 들어가요.';
   return `<div class="result result--${ok ? 'ok' : wait ? 'wait' : 'off'}"><div class="result__tag">${tag}</div><p>${body}</p>
-    <dl><dt>학생</dt><dd>1학년 ${p.cls}반 ${p.num}번 ${esc(p.name)}</dd><dt>연락처</dt><dd>${esc(fmtPhone(p.phone))}</dd>
+    <dl><dt>학생</dt><dd>${p.grade}학년 ${p.cls}반 ${p.num}번 ${esc(p.name)}</dd><dt>연락처</dt><dd>${esc(fmtPhone(p.phone))}</dd>
     ${r.appliedMs ? `<dt>신청 시각</dt><dd>${clock(r.appliedMs)}${r.promoted ? ' (대기에서 확정)' : ''}</dd>` : ''}</dl></div>${extra}`;
 }
 $('#applyForm').addEventListener('submit', async (e) => {
@@ -429,7 +432,7 @@ $('#applyForm').addEventListener('submit', async (e) => {
     $('#applyForm').hidden = true;
     const done = $('#aDone'); done.hidden = false;
     done.innerHTML = resultHTML(r, p, '<button class="btn btn--line" id="again" type="button">다른 학생 신청하기</button>');
-    $('#again').onclick = () => { $('#applyForm').reset(); $('#applyForm').hidden = false; done.hidden = true; };
+    $('#again').onclick = () => { $('#applyForm').reset(); $('#aCls').innerHTML = '<option value="">반 선택</option>'; $('#applyForm').hidden = false; done.hidden = true; };
     done.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } catch (err) { show(msg, errText(err)); }
   st.busy = false; refresh();
