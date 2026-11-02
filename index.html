@@ -290,11 +290,11 @@ button, input, select { font: inherit; color: inherit; }
 const API_URL = 'https://script.google.com/macros/s/AKfycbxYtjjIpNEELFJeSmD1xlQ0s8P78VKKoX_S4EUsuRNXTDK1Mm1hODtZ2sM-2cQ4Uz1l/exec';
 // 교육 일정 (날짜가 바뀌면 여기만 고치면 화면이 바뀐다)
 const DAYS = [
-  { date: '12월 3일', dow: '목', when: '방과후', hours: 3, lessons: '1~3차시', time: '시간은 추후 안내' },
-  { date: '12월 4일', dow: '금', when: '방과후', hours: 2, lessons: '4~5차시', time: '시간은 추후 안내' },
-  { date: '12월 5일', dow: '토', when: '오전', hours: 3, lessons: '6~8차시', time: '시간은 추후 안내' },
+  { date: '12월 3일', dow: '목', when: '방과후', periods: 3, lessons: '1~3차시', time: '15:30~17:45' },
+  { date: '12월 4일', dow: '금', when: '방과후', periods: 2, lessons: '4~5차시', time: '15:30~17:00' },
+  { date: '12월 5일', dow: '토', when: '오전', periods: 3, lessons: '6~8차시', time: '10:00~12:15' },
 ];
-const DAYS_NOTE = '자세한 시간이 정해지면 신청한 연락처로 다시 알려 드려요.';
+const DAYS_NOTE = '총 8차시 운영, 8차시를 모두 들어야 수료할 수 있어요.';
 // =====================
 
 const API = new URLSearchParams(location.search).get('api') || API_URL;
@@ -331,7 +331,7 @@ const errText = (e) => ERR[e?.message] || (e?.message === 'network' ? '인터넷
 
 // ---------- 일정 ----------
 $('#days').innerHTML = DAYS.map((d, i) => `<div class="day"><div class="day__h"><b>${esc(d.date)}(${esc(d.dow)})</b><span>${i + 1}일차</span></div>
-  <div class="day__b"><strong>${esc(d.when)} ${d.hours}시간</strong><span>${esc(d.lessons)}</span><small>${esc(d.time)}</small></div></div>`).join('');
+  <div class="day__b"><strong>${esc(d.when)} ${d.periods}차시</strong><span>${esc(d.lessons)}</span><small>${esc(d.time)}</small></div></div>`).join('');
 $('#daysNote').textContent = DAYS_NOTE;
 { const k = kst(Date.now()); $('#today').textContent = `${new Date().getFullYear()}.${two(k.M)}.${two(k.D)}`; }
 
@@ -414,7 +414,7 @@ $('#tabApply').onclick = () => tab('apply'); $('#tabCheck').onclick = () => tab(
 function resultHTML(r, p, extra = '') {
   const ok = r.status === 'confirmed', wait = r.status === 'waitlist';
   const tag = ok ? '참가 확정!' : wait ? `대기 ${r.position || ''}번` : '취소된 신청';
-  const body = ok ? `${DAYS.map((d) => `${d.date}(${d.dow})`).join('·')} 3일 동안 3층 다목적실에서 만나요. 자세한 시간은 문자로 다시 알려 드려요.`
+  const body = ok ? `${DAYS.map((d) => `${d.date}(${d.dow}) ${d.time}`).join(', ')}, 3일 동안 3층 다목적실에서 만나요.`
     : wait ? '확정된 친구가 취소하면 대기 순서대로 자동으로 확정돼요. [내 신청 확인·취소]에서 언제든 확인할 수 있어요.'
     : r.canceledBy === 'teacher' ? '선생님이 이 신청을 취소했어요. 궁금한 점은 담당 선생님께 물어봐 주세요.' : '이 신청은 취소됐어요. 다시 신청하면 맨 뒤 순서로 들어가요.';
   return `<div class="result result--${ok ? 'ok' : wait ? 'wait' : 'off'}"><div class="result__tag">${tag}</div><p>${body}</p>
