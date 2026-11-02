@@ -131,6 +131,34 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
 .must { margin: 0; padding: 14px 16px; border-radius: 10px; border-left: 5px solid var(--err); background: var(--err-bg); font-size: 15px; display: grid; gap: 2px; }
 .must strong { color: var(--err); font-size: 17px; font-weight: 800; letter-spacing: -.01em; }
 
+/* 관리자 */
+.foot__admin { border: 1px solid rgba(255,255,255,.3); background: transparent; color: rgba(255,255,255,.8); border-radius: 8px; padding: 4px 12px; font-size: 13px; cursor: pointer; }
+.foot__admin:hover { color: #fff; border-color: #fff; }
+.dlg { border: 0; border-radius: 16px; padding: 24px; width: min(360px, calc(100vw - 32px)); box-shadow: 0 12px 40px rgba(12,43,33,.3); }
+.dlg::backdrop { background: rgba(12,43,33,.55); }
+.dlg form { display: grid; gap: 14px; }
+.dlg h2 { font-size: 20px; font-weight: 800; }
+.dlg__acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dlg__acts .btn { height: 48px; font-size: 16px; }
+.admin { position: fixed; inset: 0; z-index: 50; background: var(--bg); overflow: auto; padding: 24px 20px 40px; }
+.admin__in { max-width: 1120px; margin: 0 auto; display: grid; gap: 16px; }
+.admin__bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.admin__bar h2 { font-size: 24px; font-weight: 800; }
+.admin__acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn--sm { width: auto; height: 42px; padding: 0 16px; font-size: 15px; }
+.admin__sum { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin__sum span { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; font-size: 14px; color: var(--ink-2); }
+.admin__sum b { color: var(--ink); font-size: 18px; margin-left: 4px; }
+.admin__filter { max-width: 180px; height: 42px; font-size: 15px; }
+.admin__table { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.admin__table table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
+.admin__table th, .admin__table td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.admin__table th { background: var(--soft); color: var(--ink-2); font-weight: 600; }
+.admin__table tr:last-child td { border-bottom: 0; }
+.admin__table td.empty { text-align: center; color: var(--ink-3); padding: 28px; }
+.tag { display: inline-block; border-radius: 6px; padding: 1px 8px; font-size: 13px; font-weight: 700; background: var(--soft); color: var(--ink-3); }
+.tag--확정 { background: var(--mint); color: var(--green-deep); } .tag--대기 { background: var(--wait-bg); color: var(--wait); }
+
 /* 결과 */
 .result { border-radius: 12px; padding: 22px; display: grid; gap: 8px; }
 .result--ok { background: var(--mint); } .result--wait { background: var(--wait-bg); } .result--off { background: var(--soft); }
@@ -339,7 +367,34 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
 <footer class="foot"><div class="in-w">
   <span>구월중학교 · 디지털 새싹 캠프 참가 신청</span>
   <span>문의: 수학과 <a href="tel:032-460-6539">032-460-6539</a></span>
+  <button class="foot__admin" id="adminOpen" type="button">관리자</button>
 </div></footer>
+
+<dialog class="dlg" id="adminLogin" aria-labelledby="adminLoginT">
+  <form id="adminForm" novalidate>
+    <h2 id="adminLoginT">관리자 확인</h2>
+    <label class="f"><span>비밀번호</span><input class="in" id="adminPw" type="password" autocomplete="off"></label>
+    <p class="msg" id="adminLoginMsg" hidden></p>
+    <div class="dlg__acts"><button class="btn btn--line" id="adminCancel" type="button">닫기</button><button class="btn" id="adminGo" type="submit">확인</button></div>
+  </form>
+</dialog>
+
+<section class="admin" id="admin" aria-label="신청자 명단" hidden>
+  <div class="admin__in">
+    <div class="admin__bar">
+      <h2>신청자 명단</h2>
+      <div class="admin__acts">
+        <button class="btn btn--line btn--sm" id="adminRefresh" type="button">새로고침</button>
+        <button class="btn btn--sm" id="adminXlsx" type="button">엑셀 내려받기</button>
+        <button class="btn btn--line btn--sm" id="adminClose" type="button">닫기</button>
+      </div>
+    </div>
+    <div class="admin__sum" id="adminSum"></div>
+    <select class="in admin__filter" id="adminFilter" aria-label="상태로 거르기"><option value="">전체 보기</option><option value="확정">확정</option><option value="대기">대기</option><option value="취소">취소</option></select>
+    <p class="msg" id="adminMsg" hidden></p>
+    <div class="admin__table"><table><thead><tr><th>순서</th><th>상태</th><th>학년</th><th>반</th><th>번호</th><th>이름</th><th>연락처</th><th>신청 시각</th><th>사진 동의</th></tr></thead><tbody id="adminRows"></tbody></table></div>
+  </div>
+</section>
 
 <script>
 // ===== 고치는 곳 =====
@@ -364,6 +419,7 @@ const ERR = {
   consentGuardian: '보호자 동의에 체크해 주세요.', photo: '사진 촬영·활용 동의 여부를 골라 주세요.',
   nomatch: '일치하는 신청을 찾지 못했어요. 학년·반·번호·이름·연락처를 신청할 때와 똑같이 적어 주세요.',
   noapi: '신청 페이지를 준비하고 있어요.',
+  adminpw: '비밀번호가 맞지 않아요.', adminlock: '비밀번호를 여러 번 틀렸어요. 10분 뒤에 다시 해 주세요.',
 };
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -523,6 +579,60 @@ async function doCheck() {
 }
 $('#checkForm').addEventListener('submit', (e) => { e.preventDefault(); doCheck(); });
 $('#checkForm').addEventListener('input', () => show($('#cMsg'), ''));
+
+// ---------- 관리자 ----------
+// 비밀번호는 서버에서만 확인한다. 여기에는 적지 않고, 입력한 값도 창을 닫으면 지운다.
+const XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+const adm = { pw: '', data: null };
+const adminCol = (name, row) => row[adm.data.head.indexOf(name)];
+function adminDraw() {
+  const { rows } = adm.data, count = (st) => rows.filter((r) => adminCol('상태', r) === st).length;
+  $('#adminSum').innerHTML = [['확정', count('확정')], ['대기', count('대기')], ['취소', count('취소')], ['전체', rows.length]].map(([k, v]) => `<span>${k}<b>${v}</b></span>`).join('');
+  const f = $('#adminFilter').value;
+  const list = rows.map((r, i) => ({ r, i })).filter(({ r }) => !f || adminCol('상태', r) === f);
+  $('#adminRows').innerHTML = list.length ? list.map(({ r, i }) => { const st = adminCol('상태', r); return `<tr><td>${i + 1}</td><td><span class="tag tag--${esc(st)}">${esc(st)}</span></td><td>${esc(adminCol('학년', r))}</td><td>${esc(adminCol('반', r))}</td><td>${esc(adminCol('번호', r))}</td><td>${esc(adminCol('이름', r))}</td><td>${esc(adminCol('연락처', r))}</td><td>${esc(adminCol('신청 시각', r))}</td><td>${esc(adminCol('사진 동의', r))}</td></tr>`; }).join('')
+    : '<tr><td class="empty" colspan="9">아직 신청자가 없어요.</td></tr>';
+}
+async function adminLoad(pw) { adm.data = await call('adminList', { pw }); adm.pw = pw; adminDraw(); }
+function adminShut() {
+  adm.pw = ''; adm.data = null;
+  $('#adminRows').innerHTML = ''; $('#adminSum').innerHTML = ''; $('#adminFilter').value = '';
+  $('#admin').hidden = true; document.body.style.overflow = '';
+}
+$('#adminOpen').onclick = () => { show($('#adminLoginMsg'), ''); $('#adminPw').value = ''; $('#adminLogin').showModal(); $('#adminPw').focus(); };
+$('#adminCancel').onclick = () => $('#adminLogin').close();
+$('#adminForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const pw = $('#adminPw').value, go = $('#adminGo');
+  if (!pw) { show($('#adminLoginMsg'), ERR.adminpw); return; }
+  go.disabled = true; show($('#adminLoginMsg'), '');
+  try {
+    await adminLoad(pw);
+    $('#adminPw').value = ''; $('#adminLogin').close();
+    show($('#adminMsg'), ''); $('#admin').hidden = false; document.body.style.overflow = 'hidden';
+  } catch (err) { show($('#adminLoginMsg'), errText(err)); }
+  go.disabled = false;
+});
+$('#adminClose').onclick = adminShut;
+$('#adminFilter').onchange = adminDraw;
+$('#adminRefresh').onclick = async (e) => {
+  e.target.disabled = true; show($('#adminMsg'), '');
+  try { await adminLoad(adm.pw); } catch (err) { show($('#adminMsg'), errText(err)); }
+  e.target.disabled = false;
+};
+const loadXlsx = () => window.XLSX ? Promise.resolve() : new Promise((ok, no) => { const t = document.createElement('script'); t.src = XLSX_URL; t.onload = ok; t.onerror = no; document.head.appendChild(t); });
+$('#adminXlsx').onclick = async (e) => {
+  e.target.disabled = true; show($('#adminMsg'), '');
+  try {
+    await loadXlsx();
+    const ws = XLSX.utils.aoa_to_sheet([adm.data.head, ...adm.data.rows]); // 모든 칸을 글자로 넣어 연락처 앞 0과 이름이 그대로 남는다
+    ws['!cols'] = adm.data.head.map((h) => ({ wch: /시각|신청번호|연락처/.test(h) ? 20 : 10 }));
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, '신청 명단');
+    const k = kst(Date.now());
+    XLSX.writeFile(wb, `디지털새싹_신청명단_${k.M}월${k.D}일_${k.h}${k.m}.xlsx`);
+  } catch { show($('#adminMsg'), '엑셀 파일을 만들지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요.'); }
+  e.target.disabled = false;
+};
 
 refresh();
 </script>
