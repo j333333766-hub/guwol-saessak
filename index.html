@@ -127,6 +127,10 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
 .btn--danger:hover:not(:disabled) { background: var(--err-bg); }
 .msg { border-radius: 10px; padding: 12px 14px; font-weight: 600; font-size: 15px; margin: 0; background: var(--err-bg); color: var(--err); }
 
+/* 3일 출석 강조 */
+.must { margin: 0; padding: 14px 16px; border-radius: 10px; border-left: 5px solid var(--err); background: var(--err-bg); font-size: 15px; display: grid; gap: 2px; }
+.must strong { color: var(--err); font-size: 17px; font-weight: 800; letter-spacing: -.01em; }
+
 /* 결과 */
 .result { border-radius: 12px; padding: 22px; display: grid; gap: 8px; }
 .result--ok { background: var(--mint); } .result--wait { background: var(--wait-bg); } .result--off { background: var(--soft); }
@@ -222,7 +226,7 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
   </svg>
   <dl class="hero__facts">
     <div><dt>일정</dt><dd>12월 3일(목)~5일(토)</dd></div>
-    <div><dt>구성</dt><dd>3일 · 8차시</dd></div>
+    <div><dt>구성</dt><dd>8차시, 3일 모두 출석</dd></div>
     <div><dt>대상</dt><dd>1~3학년 선착순 20명</dd></div>
     <div><dt>장소</dt><dd>3층 다목적실</dd></div>
   </dl>
@@ -251,6 +255,7 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
     <form id="applyForm" novalidate>
       <div style="display:grid;gap:16px">
         <h2>참가 신청서</h2>
+        <p class="must"><strong>3일 모두 출석해야 해요!</strong><span>12월 3일(목), 4일(금), 5일(토) 모두 나와야 8차시를 마치고 수료할 수 있어요. 신청하기 전에 3일 일정을 꼭 확인해 주세요.</span></p>
         <div class="row">
           <label class="f"><span>학년</span><select class="in" id="aGrade"><option value="">학년 선택</option><option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option></select></label>
           <label class="f"><span>반</span><select class="in" id="aCls"><option value="">반 선택</option></select></label>
@@ -309,7 +314,7 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
   <section class="card" id="schedule">
     <h2>교육 일정</h2>
     <div class="days" id="days"></div>
-    <p class="hint" id="daysNote"></p>
+    <p class="must"><strong>3일 모두 출석해야 해요!</strong><span id="daysNote"></span></p>
   </section>
 
   <section class="card info" id="about">
