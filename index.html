@@ -46,6 +46,12 @@ button, input, select { font: inherit; color: inherit; }
 .hero p { margin: 0; color: rgba(255,255,255,.78); font-size: 16px; max-width: 32em; }
 .cta { display: inline-flex; align-items: center; gap: 8px; height: 50px; padding: 0 24px; margin-top: 4px; border-radius: 12px; background: var(--lime); color: var(--forest); font-weight: 700; text-decoration: none; }
 .cta:hover { background: #D8F98C; }
+.perk { display: flex; flex-wrap: wrap; gap: 8px; }
+.perk span { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 6px 14px; background: rgba(200,241,105,.16); border: 1px solid rgba(200,241,105,.45); color: #fff; font-weight: 700; font-size: 15px; }
+.perk span b { color: var(--lime); }
+.gift { border-radius: 12px; padding: 14px 16px; background: var(--mint); display: grid; gap: 2px; font-size: 14px; color: var(--ink-2); }
+.gift strong { color: var(--green-deep); font-size: 16px; }
+.lite-note { margin: 0; font-size: 14px; color: var(--ink-2); }
 .hero__art { width: 100%; height: auto; display: block; }
 .hero__art .wire { fill: none; stroke: rgba(255,255,255,.35); stroke-width: 2; }
 .hero__art .flow { fill: none; stroke: var(--lime); stroke-width: 2; stroke-dasharray: 6 14; }
@@ -233,13 +239,14 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
     <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 54V30" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M32 33c-2-10-10-14-19-13 0 10 8 15 19 13z" fill="#fff"/><path d="M32 29c2-11 11-15 20-14 0 11-9 16-20 14z" fill="#C8F169"/></svg>
     <span><b>디지털 새싹 캠프</b><small>구월중학교</small></span>
   </a>
-  <nav><a href="#form">참가 신청</a><a href="#schedule">일정</a><a href="#about">프로그램 안내</a></nav>
+  <nav><a href="#form">참가 신청</a><a href="?check#form">신청 확인</a><a href="#schedule">일정</a><a href="#about">프로그램 안내</a></nav>
 </header>
 <section class="hero in-w">
   <div class="hero__copy">
     <span class="hero__tag">방문형 | 인공지능 소양</span>
     <h1>AI 플레이그라운드<br><span>n8n 에이전트 메이커</span></h1>
     <p>학교생활 속 귀찮은 반복 일을 AI 에이전트로 자동화해 봐요. 노드를 이어 데이터를 모으고, 조건에 따라 알림을 보내고, 팀 프로젝트로 나만의 자동화 도우미를 만들어요.</p>
+    <div class="perk"><span>🎁 3일 모두 참석하면 <b>문화상품권 1만원</b></span><span>🍪 매일 <b>간식</b> 제공</span></div>
     <a class="cta" href="#form">참가 신청하기</a>
   </div>
   <svg class="hero__art" viewBox="0 0 440 280" aria-hidden="true">
@@ -270,6 +277,7 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
       <div class="w"><span>대기 신청</span><b id="wait">–<small>/ 5</small></b></div>
     </div>
     <div class="seats" id="seats" aria-hidden="true"></div>
+    <div class="gift"><strong>🎁 참가 혜택</strong><span>3일 모두 참석해 수료하면 문화상품권 1만원, 3일 동안 매일 간식을 줘요.</span></div>
     <p class="status__note" id="note">누른 순서대로 자리가 정해져요. 20명이 차면 대기 신청으로 바뀌고, 대기까지 차면 마감돼요.</p>
   </section>
 
@@ -329,7 +337,8 @@ input[type=number].in::-webkit-inner-spin-button, input[type=number].in::-webkit
           <label class="f"><span>번호</span><input class="in" id="cNum" type="number" inputmode="numeric" min="1" max="50"></label>
           <label class="f f--name" style="grid-column:1/-1"><span>이름</span><input class="in" id="cName" maxlength="20" autocomplete="off"></label>
         </div>
-        <label class="f"><span>신청할 때 적은 연락처</span><input class="in" id="cPhone" inputmode="tel" maxlength="13" placeholder="010-1234-5678"></label>
+        <label class="f"><span>신청할 때 적은 연락처 <i>(신청을 취소할 때만 필요해요)</i></span><input class="in" id="cPhone" inputmode="tel" maxlength="13" placeholder="비워 둬도 확인할 수 있어요"></label>
+        <p class="hint">학년·반·번호·이름만 넣어도 신청이 잘 됐는지 볼 수 있어요.</p>
         <p class="msg" id="cMsg" hidden></p>
         <button class="btn btn--line" id="cBtn" type="submit">확인하기</button>
       </div>
@@ -418,6 +427,7 @@ const ERR = {
   consentAllDays: '3일 모두 참석할 수 있는지 체크해 주세요.', consentPrivacy: '개인정보 수집·이용 동의에 체크해 주세요.',
   consentGuardian: '보호자 동의에 체크해 주세요.', photo: '사진 촬영·활용 동의 여부를 골라 주세요.',
   nomatch: '일치하는 신청을 찾지 못했어요. 학년·반·번호·이름·연락처를 신청할 때와 똑같이 적어 주세요.',
+  nomatchLite: '이 학년·반·번호·이름으로 된 신청이 없어요. 이름에 오타가 없는지 확인하고, 없으면 [신청하기]에서 신청해 주세요.',
   noapi: '신청 페이지를 준비하고 있어요.',
   adminpw: '비밀번호가 맞지 않아요.', adminlock: '비밀번호를 여러 번 틀렸어요. 10분 뒤에 다시 해 주세요.',
 };
@@ -521,6 +531,9 @@ function tab(which) {
   $('#paneApply').hidden = !a; $('#paneCheck').hidden = a;
 }
 $('#tabApply').onclick = () => tab('apply'); $('#tabCheck').onclick = () => tab('check');
+// 주소에 ?check 가 있으면 [내 신청 확인] 탭을 바로 연다 (포스터 QR 등)
+if (new URLSearchParams(location.search).has('check')) { tab('check'); setTimeout(() => $('#form').scrollIntoView({ block: 'start' }), 300); }
+document.querySelectorAll('a[href="?check#form"]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); tab('check'); $('#form').scrollIntoView({ behavior: 'smooth' }); }));
 
 // ---------- 신청 ----------
 function resultHTML(r, p, extra = '') {
@@ -530,7 +543,7 @@ function resultHTML(r, p, extra = '') {
     : wait ? '확정된 친구가 취소하면 대기 순서대로 자동으로 확정돼요. [내 신청 확인·취소]에서 언제든 확인할 수 있어요.'
     : r.canceledBy === 'teacher' ? '선생님이 이 신청을 취소했어요. 궁금한 점은 담당 선생님께 물어봐 주세요.' : '이 신청은 취소됐어요. 다시 신청하면 맨 뒤 순서로 들어가요.';
   return `<div class="result result--${ok ? 'ok' : wait ? 'wait' : 'off'}"><div class="result__tag">${tag}</div><p>${body}</p>
-    <dl><dt>학생</dt><dd>${p.grade}학년 ${p.cls}반 ${p.num}번 ${esc(p.name)}</dd><dt>연락처</dt><dd>${esc(fmtPhone(p.phone))}</dd>
+    <dl><dt>학생</dt><dd>${p.grade}학년 ${p.cls}반 ${p.num}번 ${esc(p.name)}</dd>${r.lite ? '' : `<dt>연락처</dt><dd>${esc(fmtPhone(p.phone))}</dd>`}
     ${r.appliedMs ? `<dt>신청 시각</dt><dd>${clock(r.appliedMs)}${r.promoted ? ' (대기에서 확정)' : ''}</dd>` : ''}</dl></div>${extra}`;
 }
 $('#applyForm').addEventListener('submit', async (e) => {
@@ -554,14 +567,16 @@ $('#applyForm').addEventListener('input', () => show($('#aMsg'), ''));
 // ---------- 확인·취소 ----------
 async function doCheck() {
   const p = person('c'), msg = $('#cMsg'), out = $('#cOut');
-  const bad = localErr(p);
+  const noPhone = p.phone.replace(/\D/g, '') === '';
+  const bad = noPhone ? localErr({ ...p, phone: '01000000000' }) : localErr(p);
   if (bad) { show(msg, ERR[bad]); return; }
   show(msg, ''); $('#cBtn').disabled = true;
   try {
     const r = await call('check', p);
     out.hidden = false;
     const live = ['confirmed', 'waitlist'].includes(r.status);
-    out.innerHTML = resultHTML(r, p, live ? '<button class="btn btn--danger" id="cancelAsk" type="button">신청 취소하기</button><div id="cancelBox"></div>' : '');
+    out.innerHTML = resultHTML(r, p, !live ? '' : r.lite ? '<p class="lite-note">신청을 취소하려면 위에 신청할 때 적은 연락처도 넣고 다시 확인해 주세요.</p>'
+      : '<button class="btn btn--danger" id="cancelAsk" type="button">신청 취소하기</button><div id="cancelBox"></div>');
     const ask = $('#cancelAsk');
     if (ask) ask.onclick = () => {
       ask.hidden = true;
